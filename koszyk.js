@@ -52,15 +52,15 @@ function changeQty(index, delta) {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart(); // 👈 just re-renders instead of reloading
+    renderCart();
 }
 
 function removeItem(index) {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart(); // 👈 just re-renders instead of reloading
+    renderCart();
 }
 
-// Initial render when page loads
+
 renderCart();
