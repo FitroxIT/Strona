@@ -1,3 +1,16 @@
+class Produkt {
+    constructor(name, price, quantity, img) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.img = img;
+    }
+
+    itemTotal() {
+        return this.price * this.quantity;
+    }
+}
+
 document.querySelectorAll('.add').forEach(button => {
     button.addEventListener('click', () => {
         const box = button.closest('.boxKamien');
@@ -13,10 +26,14 @@ document.querySelectorAll('.add').forEach(button => {
         if (existing) {
             existing.quantity += 1;
         } else {
-            cart.push({ name, price, quantity: 1, img });
+            cart.push(new Produkt(name, price, 1, img));
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`${name} dodano do koszyka!`);
+
+        const info = document.getElementById('dodanoInfo');
+        info.textContent = `${name} dodano do koszyka!`;
+        info.style.display = 'block';
+        setTimeout(() => { info.style.display = 'none'; }, 2000);
     });
 });

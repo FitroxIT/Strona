@@ -1,7 +1,25 @@
-const koszykDiv = document.querySelector('.koszyk');
+class Produkt {
+    constructor(name, price, quantity, img) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.img = img;
+    }
+
+    itemTotal() {
+        return this.price * this.quantity;
+    }
+}
+
+function loadCart() {
+    const raw = JSON.parse(localStorage.getItem('cart')) || [];
+    return raw.map(item => Object.assign(new Produkt(), item));
+}
+
+const koszykDiv = document.getElementsByClassName('koszyk')[0];
 
 function renderCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = loadCart();
     koszykDiv.innerHTML = '';
 
     if (cart.length === 0) {
@@ -14,7 +32,7 @@ function renderCart() {
         let total = 0;
 
         cart.forEach((item, index) => {
-            const itemTotal = item.price * item.quantity;
+            const itemTotal = item.itemTotal();
             total += itemTotal;
             const colorClass = item.name.toLowerCase().replace(' ', '');
 
@@ -22,7 +40,6 @@ function renderCart() {
                 <div class="boxKamien koszykItem">
                     <img src="${item.img}" id="zdj">
                     <p class="ruda ${colorClass}">${item.name}</p>
-
                     <div class="addToCart">
                         <p class="${colorClass}">${itemTotal} zł</p>
                         <button class="koszykBtn" onclick="changeQty(${index}, -1)"> - </button>
@@ -44,7 +61,7 @@ function renderCart() {
 }
 
 function changeQty(index, delta) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = loadCart();
     cart[index].quantity += delta;
 
     if (cart[index].quantity <= 0) {
@@ -56,11 +73,10 @@ function changeQty(index, delta) {
 }
 
 function removeItem(index) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = loadCart();
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
 }
-
 
 renderCart();
