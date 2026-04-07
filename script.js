@@ -17,6 +17,6 @@ document.querySelectorAll('.add').forEach(button => {
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
-        
+        alert(`${name} dodano do koszyka!`);
     });
 });
